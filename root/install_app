@@ -1,0 +1,16 @@
+#!/bin/bash
+install_app() {
+
+###
+apt-get --yes upgrade
+###
+
+## Install packages
+apt-get install --yes ubuntu-standard casper lupin-casper
+apt-get install --yes discover laptop-detect os-prober
+apt-get install --yes linux-generic
+apt-get install --yes openbox obconf obmenu
+
+}
+
+install_app

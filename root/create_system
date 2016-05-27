@@ -1,0 +1,16 @@
+#!/bin/bash
+create_system() {
+ mount none -t proc /proc
+ mount none -t sysfs /sys
+ mount none -t devpts /dev/pts
+ export HOME=/etc/skel
+ export LC_ALL=C
+ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 12345678 # Substitute " 12345678 " with the PPA's OpenPGP ID.
+ apt-get update
+ apt-get install --yes dbus
+ dbus-uuidgen > /var/lib/dbus/machine-id
+ dpkg-divert --local --rename --add /sbin/initctl
+ ln -s /bin/true /sbin/initctl
+}
+
+create_system

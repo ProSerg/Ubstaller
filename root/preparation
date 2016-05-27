@@ -1,0 +1,23 @@
+#!/bin/bash
+preparation () {
+
+###
+cd /tmp # Заходим в оперативную память
+cp /initrd.img ./initrd0.gz # копируем в /tmp initrd.img  
+casper-new-uuid /tmp/initrd0.gz /tmp/initrd.gz /tmp/casper-uuid-generic # Создаем файлы initrd.gz и casper-uuid-generic
+mkdir /tmp/tmp # создаем папку для временного хранения initramfs
+cd ./tmp # входим в нее
+gunzip -dc ../initrd.gz | cpio -imvd --no-absolute-filenames # распаковка gz
+find . | cpio --quiet --dereference -o -H newc | lzma -7 > ../initrd.lz # упаковка в lz
+
+###
+cp -v chroot/tmp/{initrd.lz,casper-uuid-generic} .
+
+apt-get install ubiquity-frontend-gtk
+
+cd /
+rm -rfv /tmp/*
+
+}
+
+preparation
