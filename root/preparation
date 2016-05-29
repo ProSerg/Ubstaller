@@ -1,6 +1,6 @@
 #!/bin/bash
 preparation () {
-
+echo "### preparation"
 ###
 cd /tmp # Заходим в оперативную память
 cp /initrd.img ./initrd0.gz # копируем в /tmp initrd.img  
@@ -11,13 +11,27 @@ gunzip -dc ../initrd.gz | cpio -imvd --no-absolute-filenames # распаков�
 find . | cpio --quiet --dereference -o -H newc | lzma -7 > ../initrd.lz # упаковка в lz
 
 ###
-cp -v chroot/tmp/{initrd.lz,casper-uuid-generic} .
 
-apt-get install ubiquity-frontend-gtk
-
-cd /
-rm -rfv /tmp/*
 
 }
 
+copy() {
+ echo "### copy initrd.lz"
+ [ -d /mnt/hdd ] || mkdir -p /mnt/hdd
+ mount /dev/sda1 /mnt/hdd
+ cp -r -v /tmp/casper-uuid-generic 	/mnt/hdd/home/serg/zwork/UpWork/Ubstaller/image/casper
+ cp -r -v /tmp/initrd.lz 		/mnt/hdd/home/serg/zwork/UpWork/Ubstaller/image/casper
+ umount /mnt/hdd
+}
+
+clear_tmp() {
+ echo "### clear tmp"
+ cd /
+ rm -rfv /tmp/*
+}
+
+
+
 preparation
+copy
+clear_tmp

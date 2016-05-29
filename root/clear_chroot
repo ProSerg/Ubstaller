@@ -1,0 +1,24 @@
+clear_chroot() {
+echo "rm /var/lib/dbus/machine-id"
+rm /var/lib/dbus/machine-id
+
+echo "dpkg-divert initctl"
+rm /sbin/initctl
+dpkg-divert --rename --remove /sbin/initctl
+
+
+}
+
+clear() {
+ apt-get clean
+ rm -rf /tmp/*
+ rm /etc/resolv.conf
+ umount -lf  /proc
+ umount -lf  /sys
+ umount -lf  /dev/pts
+ exit
+}
+
+
+clear_chroot
+clear

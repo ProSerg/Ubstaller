@@ -3,8 +3,11 @@ create_system() {
  mount none -t proc /proc
  mount none -t sysfs /sys
  mount none -t devpts /dev/pts
- export HOME=/etc/skel
+ mkdir -p /home/user
+ export HOME=/home/user
  export LC_ALL=C
+ export LC_CTYPE=""
+ export LC_MESSAGE=""
  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 12345678 # Substitute " 12345678 " with the PPA's OpenPGP ID.
  apt-get update
  apt-get install --yes dbus
@@ -13,4 +16,6 @@ create_system() {
  ln -s /bin/true /sbin/initctl
 }
 
+
 create_system
+
